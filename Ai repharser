@@ -2,7 +2,6 @@ import java.util.*;
 
 public class AIRephraser {
 
-    // Simple synonym map
     static Map<String, String> synonymMap = new HashMap<>();
     static {
         synonymMap.put("quick", "fast");
@@ -14,13 +13,12 @@ public class AIRephraser {
         synonymMap.put("dog", "canine");
     }
 
-    // Function to rephrase input
     public static String rephraseText(String input) {
         String[] words = input.toLowerCase().split("\\s+");
         StringBuilder rephrased = new StringBuilder();
 
         for (String word : words) {
-            String cleanWord = word.replaceAll("[^a-z]", ""); // remove punctuation
+            String cleanWord = word.replaceAll("[^a-z]", "");
             if (synonymMap.containsKey(cleanWord)) {
                 rephrased.append(synonymMap.get(cleanWord)).append(" ");
             } else {
@@ -30,7 +28,6 @@ public class AIRephraser {
         return rephrased.toString().trim();
     }
 
-    // Estimate similarity percentage between original and rephrased
     public static double estimatePlagiarism(String original, String rephrased) {
         Set<String> originalWords = new HashSet<>(Arrays.asList(original.toLowerCase().split("\\s+")));
         Set<String> rephrasedWords = new HashSet<>(Arrays.asList(rephrased.toLowerCase().split("\\s+")));
@@ -46,7 +43,6 @@ public class AIRephraser {
         return similarity;
     }
 
-    // Main function
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
         System.out.println("Enter original text:");
