@@ -1,0 +1,62 @@
+import java.util.*;
+
+public class AIRephraser {
+
+    // Simple synonym map
+    static Map<String, String> synonymMap = new HashMap<>();
+    static {
+        synonymMap.put("quick", "fast");
+        synonymMap.put("brown", "dark");
+        synonymMap.put("fox", "animal");
+        synonymMap.put("jumps", "leaps");
+        synonymMap.put("over", "above");
+        synonymMap.put("lazy", "idle");
+        synonymMap.put("dog", "canine");
+    }
+
+    // Function to rephrase input
+    public static String rephraseText(String input) {
+        String[] words = input.toLowerCase().split("\\s+");
+        StringBuilder rephrased = new StringBuilder();
+
+        for (String word : words) {
+            String cleanWord = word.replaceAll("[^a-z]", ""); // remove punctuation
+            if (synonymMap.containsKey(cleanWord)) {
+                rephrased.append(synonymMap.get(cleanWord)).append(" ");
+            } else {
+                rephrased.append(cleanWord).append(" ");
+            }
+        }
+        return rephrased.toString().trim();
+    }
+
+    // Estimate similarity percentage between original and rephrased
+    public static double estimatePlagiarism(String original, String rephrased) {
+        Set<String> originalWords = new HashSet<>(Arrays.asList(original.toLowerCase().split("\\s+")));
+        Set<String> rephrasedWords = new HashSet<>(Arrays.asList(rephrased.toLowerCase().split("\\s+")));
+
+        int commonWords = 0;
+        for (String word : rephrasedWords) {
+            if (originalWords.contains(word)) {
+                commonWords++;
+            }
+        }
+
+        double similarity = (double) commonWords / originalWords.size() * 100;
+        return similarity;
+    }
+
+    // Main function
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        System.out.println("Enter original text:");
+        String input = sc.nextLine();
+
+        String rephrased = rephraseText(input);
+        double plagiarism = estimatePlagiarism(input, rephrased);
+
+        System.out.println("\n--- OUTPUT ---");
+        System.out.println("Rephrased Text: " + rephrased);
+        System.out.printf("Plagiarism Estimate: %.2f%%\n", plagiarism);
+    }
+}
